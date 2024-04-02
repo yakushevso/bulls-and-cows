@@ -6,6 +6,7 @@ public class Bullscows {
     private String secret;
     private int bulls;
     private int cows;
+    private final String ALPHABET = "1234567890abcdefghijklmnopqrstuvwxyz";
 
     public Bullscows() {
         bulls = 0;
@@ -14,30 +15,43 @@ public class Bullscows {
 
     public void run() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Please, enter the secret code's length:");
+        System.out.println("Input the length of the secret code:");
 
-        int size;
+        int length;
 
         while (true) {
-            size = sc.nextInt();
+            length = sc.nextInt();
 
-            if (size < 10) {
+            if (length <= 36) {
                 break;
             } else {
                 System.out.printf("Error: can't generate a secret number " +
-                        "with a length of %d because there aren't enough unique digits.\n", size);
+                        "with a length of %d because there aren't enough unique digits.\n", length);
             }
         }
 
-        randomSecretCode(size);
+        System.out.println("Input the number of possible symbols in the code:");
+        int range = sc.nextInt();
+
+        secret = randomSecretCode(length, range);
+
+        String rangeChar;
+
+        if (range < 10) {
+            rangeChar = "0-" + ALPHABET.charAt(range - 1);
+        } else {
+            rangeChar = "0-9, a-" + ALPHABET.charAt(range - 1);
+        }
+
+        System.out.printf("The secret is prepared: %s (%s).\n", "*".repeat(length), rangeChar);
         System.out.println("Okay, let's start a game!");
 
-        int i = 1;
+        int turn = 1;
 
         while (bulls != secret.length()) {
             bulls = 0;
             cows = 0;
-            System.out.printf("Turn %d:\n", i++);
+            System.out.printf("Turn %d:\n", turn++);
             grader(sc.next());
             printGrader();
         }
@@ -73,21 +87,17 @@ public class Bullscows {
         }
     }
 
-    public void randomSecretCode(int size) {
+    public String randomSecretCode(int length, int range) {
         StringBuilder secretCode = new StringBuilder();
-        boolean[] digits = new boolean[10];
 
-        for (int i = 0; i < size; i++) {
-            int digit = (int) (Math.random() * 9 + 1);
+        while (secretCode.length() < length) {
+            int random = (int) (Math.random() * range);
 
-            if (digits[digit]) {
-                i--;
-            } else {
-                digits[digit] = true;
-                secretCode.append(digit);
+            if (!secretCode.toString().contains(String.valueOf(ALPHABET.charAt(random)))) {
+                secretCode.append(ALPHABET.charAt(random));
             }
         }
 
-        secret = secretCode.toString();
+        return secretCode.toString();
     }
 }
