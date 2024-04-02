@@ -1,0 +1,22 @@
+# course config files
+*.yaml
+
+# gradle
+.gradle/
+/gradle/
+/gradlew
+/gradlew.bat
+build
+out
+
+# idea config
+.idea
+
+# stages
+/Bulls and Cows/Game log/
+/Bulls and Cows/Grader/
+/Bulls and Cows/Secret code/
+/Bulls and Cows/Game time/
+/Bulls and Cows/Improve the code generator/
+/Bulls and Cows/New level/
+/Bulls and Cows/Error/
