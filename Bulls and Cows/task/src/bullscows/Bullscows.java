@@ -24,7 +24,8 @@ public class Bullscows {
             if (size < 10) {
                 break;
             } else {
-                System.out.printf("Error: can't generate a secret number with a length of %d because there aren't enough unique digits.\n", size);
+                System.out.printf("Error: can't generate a secret number " +
+                        "with a length of %d because there aren't enough unique digits.\n", size);
             }
         }
 
@@ -73,36 +74,20 @@ public class Bullscows {
     }
 
     public void randomSecretCode(int size) {
-        if (size < 10) {
+        StringBuilder secretCode = new StringBuilder();
+        boolean[] digits = new boolean[10];
 
-            boolean check;
-            do {
-                long pseudoRandomNumber = System.nanoTime();
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(pseudoRandomNumber).reverse();
+        for (int i = 0; i < size; i++) {
+            int digit = (int) (Math.random() * 9 + 1);
 
-                while (stringBuilder.charAt(0) == '0') {
-                    stringBuilder.deleteCharAt(0);
-                }
-
-                secret = stringBuilder.substring(0, size);
-
-                check = false;
-                boolean[] digits = new boolean[10];
-
-                for (int i = 0; i < secret.length(); i++) {
-                    int digit = Character.getNumericValue(secret.charAt(i));
-
-                    if (digits[digit]) {
-                        check = true;
-                    }
-
-                    digits[digit] = true;
-                }
-
-            } while (check);
-        } else {
-            System.out.printf("Error: can't generate a secret number with a length of %d because there aren't enough unique digits.", size);
+            if (digits[digit]) {
+                i--;
+            } else {
+                digits[digit] = true;
+                secretCode.append(digit);
+            }
         }
+
+        secret = secretCode.toString();
     }
 }
